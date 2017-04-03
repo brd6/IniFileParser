@@ -17,10 +17,11 @@ int main(int ac, char **av)
   //  iniFileParser.get("sectionName", "key", value);
   //  std::string val = iniFileParser.get("sectionName", "key");
 
-      std::vector<std::string> ss;
+      std::vector<std::vector<std::string>> ss;
+//      std::string ss;
 
-      iniFileParser.get("mySection", "vectorOfString", ss);
-      std::cout << ss.at(0) << std::endl;
+      iniFileParser.get("mySection", "mapOfNumber", ss);
+      std::cout << ss[0][0] << std::endl;
     }
   catch (std::exception &e)
     {

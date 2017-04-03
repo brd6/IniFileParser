@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include "IniSection.hpp"
 
 namespace ini
@@ -104,4 +105,18 @@ namespace ini
       return "";
     return mData.at(key);
   }
+
+  std::string& IniSection::trimSpace(std::string &str) const
+  {
+    // remove start space
+    auto startPos = str.find_first_not_of(SPACES_SYMBOL);
+    if(std::string::npos != startPos)
+      str = str.substr(startPos);
+    // remove last space
+    auto endPos = str.find_last_not_of(SPACES_SYMBOL);
+    if( std::string::npos != endPos)
+	str = str.substr(0, endPos + 1);
+    return str;
+  }
+
 }

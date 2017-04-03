@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include <sstream>
+#include <typeinfo>
 
 namespace ini
 {
@@ -49,13 +50,19 @@ namespace ini
     }
 
     template<typename TValue>
-    void get(std::string const &key, std::vector<TValue> &value) const
+    void getArray(std::string const &key, std::vector<TValue> &value) const
     {
       auto rawValue = get(key);
 
-      std::cout << "ok" << std::endl;
+      value = convertValueArray<TValue>(rawValue);
+    }
 
-      //value = convertValueArray<TValue>(rawValue);
+    template<typename TValue>
+    void getArrayOfArray(std::string const &key, std::vector<std::vector<TValue>> &value) const
+    {
+      auto rawValue = get(key);
+
+      value = convertValueArrayOfArray<TValue>(rawValue);
     }
 
     std::string const get(std::string const &key) const;
@@ -64,27 +71,55 @@ namespace ini
     std::string extractKey(std::string const &line) const;
     std::string extractValue(std::string const &line) const;
     bool isANewDataLine(std::string const &currentLine) const;
-
-//    template <typename TValue>
-//    std::vector<TValue> convertValueArray(std::string const &rawValue) const
-//    {
-//      std::string str;
-//      std::istringstream iss(rawValue);
-//
-//      while (std::getline(iss, str, '\n'))
-//	{
-//	  std::cout << str << std::endl;
-//	}
-//    }
+    std::string &trimSpace(std::string &str) const;
 
     template <typename TValue>
     TValue convertValue(std::string const &rawValue) const;
+
+    template <typename TValue>
+    std::vector<TValue> convertValueArray(std::string const &rawValue) const;
+
+    template <typename TValue>
+    std::vector<std::vector<TValue>> convertValueArrayOfArray(std::string const &rawValue) const;
   };
 
   template <typename TValue>
   inline TValue IniSection::convertValue(std::string const &input) const
   {
-      throw std::logic_error("Value type getter not implement yet.");
+      throw std::logic_error("Value type not implement yet.");
+  }
+
+  template <typename TValue>
+  inline std::vector<TValue> IniSection::convertValueArray(std::string const &rawValue) const
+  {
+    std::vector<TValue> value;
+    std::string str;
+    std::istringstream iss(rawValue);
+
+    while (std::getline(iss, str, ARRAY_SEPARATOR))
+      {
+	str = trimSpace(str);
+	std::cout << "'" << str << "'" << std::endl;
+	value.push_back(convertValue<TValue>(str));
+      }
+    return value;
+  }
+
+  template <typename TValue>
+  inline std::vector<std::vector<TValue>> IniSection::convertValueArrayOfArray(std::string const &rawValue) const
+  {
+    std::vector<std::vector<TValue>> value;
+    std::string str;
+    std::istringstream iss(rawValue);
+
+    while (std::getline(iss, str, ARRAY_SEPARATOR))
+      {
+	str = trimSpace(str);
+	std::cout << "'" << str << "'" << std::endl;
+	value.push_back(convertValue<TValue>(str));
+      }
+    return value;
+    throw std::logic_error("OKOKOK");
   }
 
   template<>

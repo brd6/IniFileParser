@@ -54,8 +54,28 @@ namespace ini
       auto section = getSection(sectionName);
 
       if (section == nullptr)
-	return;
-      return section->get<TValue>(key, value);
+	throw std::logic_error("Section '" + sectionName + "' not found");
+      section->get<TValue>(key, value);
+    }
+
+    template<typename TValue>
+    void get(std::string const &sectionName, std::string const &key, std::vector<TValue> &value) const
+    {
+      auto section = getSection(sectionName);
+
+      if (section == nullptr)
+	throw std::logic_error("Section '" + sectionName + "' not found");
+      section->getArray<TValue>(key, value);
+    }
+
+    template<typename TValue>
+    void get(std::string const &sectionName, std::string const &key, std::vector<std::vector<TValue>> &value) const
+    {
+      auto section = getSection(sectionName);
+
+      if (section == nullptr)
+	throw std::logic_error("Section '" + sectionName + "' not found");
+      section->getArrayOfArray<TValue>(key, value);
     }
 
     std::string const get(std::string const &sectionName, std::string const &key);
