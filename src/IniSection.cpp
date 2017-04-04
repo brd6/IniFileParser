@@ -51,12 +51,12 @@ namespace ini
 	  key = extractKey(line);
 	value = extractValue(line);
 
-	if (mData.count(key) == 0)
-	  mData[key] = value;
+	if (mContents.count(key) == 0)
+	  mContents[key] = value;
 	else
 	  {
-	    mData[key].append("\n");
-	    mData[key].append(value);
+	    mContents[key].append("\n");
+	    mContents[key].append(value);
 	  }
       }
   }
@@ -101,9 +101,9 @@ namespace ini
 
   std::string const IniSection::get(std::string const &key) const
   {
-    if (mData.count(key) == 0)
+    if (mContents.count(key) == 0)
       return "";
-    return mData.at(key);
+    return mContents.at(key);
   }
 
   std::string& IniSection::trimSpace(std::string &str) const
@@ -119,4 +119,15 @@ namespace ini
     return str;
   }
 
+  void IniSection::set(std::string const &key, std::string const &value)
+  {
+    if (mContents.count(key) == 0)
+      return ;
+    mContents[key] = value;
+  }
+
+  std::unordered_map<std::string, std::string> const &IniSection::getContents()
+  {
+    return mContents;
+  }
 }

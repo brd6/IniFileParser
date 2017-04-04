@@ -9,19 +9,22 @@
 namespace ini
 {
   IniFileParser::IniFileParser():
-	  mCurrentSection(nullptr)
+	  mCurrentSection(nullptr),
+	  mFilePath("")
   {
 
   }
 
   IniFileParser::IniFileParser(const std::string &filePath):
-	  mCurrentSection(nullptr)
+	  mCurrentSection(nullptr),
+	  mFilePath(filePath)
   {
     load(filePath);
   }
 
   void IniFileParser::load(std::string const &filePath)
   {
+    mFilePath = filePath;
     std::ifstream inFile(filePath);
     mNbSection = 0;
     mNbLine = 0;
@@ -44,6 +47,31 @@ namespace ini
       }
     checkLastLine(currentLine);
     inFile.close();
+  }
+
+  void IniFileParser::saveToFile(std::string const &filePath)
+  {
+    std::ofstream outFile(filePath, std::ios::out | std::ios::trunc);
+
+    if (!outFile.is_open())
+      throw std::runtime_error("Unable to open the file to do save.");
+
+    for (auto &section : mSections)
+      {
+	outFile << "[" << section->getName() << "]" << std::endl;
+	for (auto &content : section->getContents())
+	  {
+	    outFile << content.first << " = " << content.second << std::endl;
+	  }
+	outFile << std::endl;
+      }
+
+    outFile.close();
+  }
+
+  void IniFileParser::saveToFile()
+  {
+    saveToFile(mFilePath);
   }
 
   void IniFileParser::checkLastLine(std::string &currentLine)
@@ -142,4 +170,14 @@ namespace ini
 
     return (section == nullptr) ? "" : section->get(key);
   }
+
+  void IniFileParser::set(std::string const &sectionName, std::string const &key, std::string const &value)
+  {
+    auto section = getSection(sectionName);
+
+    if (section == nullptr)
+      throw std::logic_error("Section '" + sectionName + "' not found");
+    section->set(key, value);
+  }
+
 }

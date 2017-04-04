@@ -36,6 +36,8 @@ namespace ini
     int mNbLine;
     IniSection *mCurrentSection;
 
+    std::string mFilePath;
+
    public:
     IniFileParser();
     IniFileParser(std::string const &filePath);
@@ -44,7 +46,11 @@ namespace ini
     virtual ~IniFileParser() = default;
 
     void load(std::string const &filePath);
+
     void unload();
+
+    void saveToFile(std::string const &filePath);
+    void saveToFile();
 
     IniSection *getSection(std::string const &name) const;
 
@@ -80,6 +86,8 @@ namespace ini
 
     std::string const get(std::string const &sectionName, std::string const &key);
 
+    void set(std::string const &sectionName, std::string const &key, std::string const &value);
+
    private:
     bool isAComment(std::string const &line) const;
     bool isAEmptyLine(std::string const &line) const;
@@ -87,6 +95,7 @@ namespace ini
     void addNewSection(IniSection *section);
     bool parse(std::string const &currentLine);
     void checkLastLine(std::string &currentLine);
+
   };
 
 }

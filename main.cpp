@@ -12,16 +12,22 @@ int main(int ac, char **av)
 
   try
     {
-      iniFileParser.load(av[1]);
+      iniFileParser.load("./test_files/save.ini");
 //      auto section = iniFileParser.getSection("global");
   //  iniFileParser.get("sectionName", "key", value);
   //  std::string val = iniFileParser.get("sectionName", "key");
 
-      std::vector<std::vector<std::string>> ss;
+//      std::vector<std::vector<std::string>> ss;
 //      std::string ss;
 
-      iniFileParser.get("mySection", "mapOfNumber", ss);
-      std::cout << ss[0][0] << std::endl;
+      std::cout << iniFileParser.get("Save", "text") << std::endl;
+
+      iniFileParser.set("Save", "text", "Berdrigue");
+
+      std::cout << iniFileParser.get("Save", "text") << std::endl;
+
+      iniFileParser.saveToFile();
+
     }
   catch (std::exception &e)
     {

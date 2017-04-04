@@ -26,7 +26,7 @@ namespace ini
    private:
     std::string mName;
     std::vector<std::string> mLines;
-    std::unordered_map<std::string, std::string> mData;
+    std::unordered_map<std::string, std::string> mContents;
 
    public:
     IniSection();
@@ -40,6 +40,10 @@ namespace ini
     void setName(std::string const &name);
     void feed(std::string const &line);
     void parse();
+
+    std::unordered_map<std::string, std::string> const &getContents();
+
+    void set(std::string const &key, std::string const &value);
 
     template<typename TValue>
     void get(std::string const &key, TValue &value) const
