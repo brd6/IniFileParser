@@ -112,17 +112,6 @@ namespace ini
   template <typename TValue>
   inline std::vector<std::vector<TValue>> IniSection::convertValueArrayOfArray(std::string const &rawValue) const
   {
-//    std::vector<std::vector<TValue>> value;
-//    std::string str;
-//    std::istringstream iss(rawValue);
-//
-//    while (std::getline(iss, str, ARRAY_SEPARATOR))
-//      {
-//	str = trimSpace(str);
-//	std::cout << "'" << str << "'" << std::endl;
-//	value.push_back(convertValue<TValue>(str));
-//      }
-//    return value;
     throw std::logic_error("Value array of array type not implement yet.");
   }
 
