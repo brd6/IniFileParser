@@ -103,7 +103,6 @@ namespace ini
     while (std::getline(iss, str, ARRAY_SEPARATOR))
       {
 	str = trimSpace(str);
-	std::cout << "'" << str << "'" << std::endl;
 	value.push_back(convertValue<TValue>(str));
       }
     return value;

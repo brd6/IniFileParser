@@ -7,7 +7,7 @@ int main()
 
   try
     {
-      iniFileParser.load("./test_files/save.ini");
+      iniFileParser.load("../test_files/valid01.ini");
 //      auto section = iniFileParser.getSection("global");
   //  iniFileParser.get("sectionName", "key", value);
   //  std::string val = iniFileParser.get("sectionName", "key");
@@ -15,13 +15,16 @@ int main()
 //      std::vector<std::vector<std::string>> ss;
 //      std::string ss;
 
-      std::cout << iniFileParser.get("Save", "text") << std::endl;
+      std::cout << iniFileParser.get("mySection", "mapOfNumber") << std::endl;
 
-      iniFileParser.set("Save", "text", "Berdrigue");
+      std::vector<int> myMap;
 
-      std::cout << iniFileParser.get("Save", "text") << std::endl;
+      iniFileParser.get("mySection", "mapOfNumber", myMap);
 
-      iniFileParser.saveToFile();
+      std::cout << myMap.size() << std::endl;
+
+
+//      iniFileParser.saveToFile();
     }
   catch (std::exception &e)
     {
